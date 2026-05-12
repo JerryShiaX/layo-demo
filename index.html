@@ -634,66 +634,354 @@
     color: var(--bone-mute);
   }
 
-  /* ============ ACT IV — NUMBERS (3 fullscreens) ============ */
-  .act-4 { background: var(--bone); }
-  .panel {
-    min-height: 100svh;
-    width: 100%;
+  /* ============ Shared act mark ============ */
+  .act-mark {
+    font-family: var(--f-sans);
+    font-size: 10px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: var(--mute);
+    display: inline-flex; align-items: baseline; gap: 14px;
+  }
+  .act-mark::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+  .dark .act-mark, [data-dark] .act-mark { color: var(--bone-mute); }
+
+  /* ============ ACT IV — COLLECTIONS ============ */
+  .act-collections {
+    background: var(--bone);
+    padding: var(--gutter) 0 0;
+  }
+  .col-head {
+    padding: 90px var(--gutter) 70px;
     display: grid;
-    place-items: center;
-    padding: 110px var(--gutter) 80px;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 6vw;
+  }
+  .col-head h2 {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(40px, 5.5vw, 88px);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    max-width: 16ch;
+  }
+  .col-head h2 em { font-style: italic; }
+  .col-head .col-meta {
+    text-align: right;
+    font-family: var(--f-sans);
+    font-size: 10px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: var(--mute);
+    line-height: 1.8;
+  }
+  .col-head .col-meta strong {
+    display: block;
+    font-family: var(--f-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 4px;
+  }
+  .col-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--mute-2);
+  }
+  .col-card {
     position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: var(--ink);
+    border-right: 1px solid var(--bone-mute-2);
+    cursor: none;
+    display: block;
   }
-  .panel.dark { background: var(--ink); color: var(--bone); }
-  .panel-num {
-    text-align: center;
+  .col-card:last-child { border-right: none; }
+  .col-card-img {
+    position: absolute; inset: 0;
   }
-  .panel-num .n {
+  .col-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform 1.6s var(--ease-out), filter 1s ease;
+    filter: brightness(.92) grayscale(8%);
+  }
+  .col-card:hover .col-card-img img {
+    transform: scale(1.06);
+    filter: brightness(.8) grayscale(0%);
+  }
+  .col-card-num {
+    position: absolute;
+    top: 32px; left: 32px;
+    z-index: 3;
+    font-family: var(--f-sans);
+    font-size: 11px;
+    letter-spacing: var(--wide);
+    color: rgba(255,255,255,.86);
+    text-transform: uppercase;
+  }
+  .col-card-overlay {
+    position: absolute; inset: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(0,0,0,.16) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.6) 100%);
+    transition: opacity .6s;
+  }
+  .col-card-label {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    padding: 32px;
+    color: #fff;
+  }
+  .col-card-label h3 {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(30px, 3.2vw, 50px);
+    line-height: 1.02;
+    letter-spacing: -0.012em;
+    margin-bottom: 10px;
+  }
+  .col-card-label h3 em { font-style: italic; }
+  .col-card-label .tags {
+    font-family: var(--f-sans);
+    font-size: 11px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.78);
+  }
+  .col-card-label .more {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 22px;
+    font-family: var(--f-sans);
+    font-size: 11px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,.55);
+    padding-bottom: 3px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .55s var(--ease), transform .55s var(--ease), gap .35s;
+  }
+  .col-card:hover .col-card-label .more { opacity: 1; transform: translateY(0); }
+  .col-card-label .more:hover { gap: 18px; }
+
+  /* ============ ACT V — THE STUDIO (compact, single panel) ============ */
+  .act-studio {
+    background: var(--bone-2);
+    padding: var(--gutter);
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+  .studio-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 6vw;
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--mute-2);
+  }
+  .studio-head .studio-quote {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(32px, 4vw, 58px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+  }
+  .studio-head .studio-quote em { font-style: italic; }
+  .studio-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 0;
+    padding: 40px 0 70px;
+    border-bottom: 1px solid var(--mute-2);
+  }
+  .studio-stat {
+    display: grid; gap: 14px;
+    padding-right: 32px;
+    border-right: 1px solid var(--mute-2);
+  }
+  .studio-stat:last-child { border-right: none; padding-right: 0; }
+  .studio-stat .num {
     font-family: var(--f-display);
     font-weight: 200;
-    font-size: clamp(180px, 28vw, 460px);
-    line-height: 0.85;
-    letter-spacing: -0.05em;
-    display: inline-flex; align-items: baseline;
+    font-size: clamp(56px, 6vw, 88px);
+    line-height: 1;
+    letter-spacing: -0.035em;
   }
-  .panel-num .n em {
+  .studio-stat .num em {
     font-style: italic;
-    font-weight: 300;
-    font-size: 0.45em;
+    font-size: 0.5em;
     margin-left: 0.04em;
+    font-weight: 300;
   }
-  .panel-num .lbl {
-    margin-top: 36px;
+  .studio-stat .lbl {
+    font-family: var(--f-sans);
+    font-size: 10px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: var(--mute);
+    line-height: 1.6;
+  }
+  .studio-stat .lbl strong {
+    display: block;
     font-family: var(--f-display);
     font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--ink);
+    letter-spacing: 0;
+    text-transform: none;
+    margin-bottom: 4px;
+  }
+  .studio-caps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 70px 0 0;
+  }
+  .studio-cap {
+    padding-right: 32px;
+    border-right: 1px solid var(--mute-2);
+  }
+  .studio-cap:last-child { border-right: none; padding-right: 0; }
+  .studio-cap .cap-num {
+    font-family: var(--f-sans);
+    font-size: 10px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 18px;
+  }
+  .studio-cap h3 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: clamp(22px, 2.3vw, 30px);
+    line-height: 1.08;
+    letter-spacing: -0.008em;
+    margin-bottom: 14px;
+  }
+  .studio-cap h3 em { font-style: italic; }
+  .studio-cap p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--mute);
+  }
+
+  /* ============ ACT VI — LOOKBOOK ============ */
+  .act-lookbook {
+    background: var(--bone);
+    padding: 90px var(--gutter);
+  }
+  .look-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 6vw;
+    margin-bottom: 60px;
+  }
+  .look-head h2 {
+    font-family: var(--f-display);
     font-weight: 300;
-    font-size: clamp(18px, 1.8vw, 26px);
-    color: var(--mute);
-    line-height: 1.55;
-    max-width: 26ch;
-    margin-left: auto; margin-right: auto;
+    font-size: clamp(40px, 5.5vw, 88px);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
   }
-  .panel.dark .panel-num .lbl { color: var(--bone-mute); }
-  .panel-mark {
-    position: absolute;
-    top: 110px; left: var(--gutter);
+  .look-head h2 em { font-style: italic; }
+  .look-head .look-meta {
+    text-align: right;
     font-family: var(--f-sans);
     font-size: 10px;
     letter-spacing: var(--wide);
     text-transform: uppercase;
     color: var(--mute);
+    max-width: 30ch;
+    line-height: 1.7;
   }
-  .panel.dark .panel-mark { color: var(--bone-mute); }
-  .panel-tag {
+  .look-head .look-meta strong {
+    display: block;
+    font-family: var(--f-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--ink);
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 6px;
+  }
+  .look-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(220px, auto);
+    gap: 14px;
+  }
+  .look {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    cursor: none;
+    display: block;
+  }
+  .look img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform 1.5s var(--ease-out), filter 1s ease;
+    filter: brightness(.92);
+  }
+  .look:hover img {
+    transform: scale(1.05);
+    filter: brightness(.8);
+  }
+  .look::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.65) 100%);
+    pointer-events: none;
+  }
+  .look-label {
     position: absolute;
-    top: 110px; right: var(--gutter);
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    padding: 24px;
+    color: #fff;
+  }
+  .look-label .tag {
+    display: inline-block;
     font-family: var(--f-sans);
     font-size: 10px;
     letter-spacing: var(--wide);
     text-transform: uppercase;
-    color: var(--mute);
+    color: rgba(255,255,255,.78);
+    margin-bottom: 8px;
   }
-  .panel.dark .panel-tag { color: var(--bone-mute); }
+  .look-label h3 {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(22px, 2.4vw, 34px);
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+    margin-bottom: 6px;
+  }
+  .look-label h3 em { font-style: italic; }
+  .look-label .meta {
+    font-family: var(--f-sans);
+    font-size: 10px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.65);
+  }
+  .look.big   { grid-column: span 7; grid-row: span 2; }
+  .look.med   { grid-column: span 5; grid-row: span 2; }
+  .look.sm    { grid-column: span 4; grid-row: span 1; }
+  .look.wide  { grid-column: span 8; grid-row: span 1; }
+  .look.tall  { grid-column: span 5; grid-row: span 2; }
+  .look.wide2 { grid-column: span 7; grid-row: span 2; }
 
   /* ============ ACT V — GARMENT STUDY ============ */
   .act-5 {
@@ -1067,9 +1355,34 @@
     .act-3-pager { display: none; }
     .world-letter { font-size: 200px; }
 
-    .panel { padding: 100px 20px 60px; }
-    .panel-num .n { font-size: 140px; }
-    .panel-mark, .panel-tag { top: 90px; }
+    /* Collections mobile */
+    .col-head { grid-template-columns: 1fr; gap: 28px; padding: 80px 20px 40px; }
+    .col-head h2 { font-size: clamp(34px, 8vw, 48px); }
+    .col-head .col-meta { text-align: left; }
+    .col-grid { grid-template-columns: 1fr; }
+    .col-card { aspect-ratio: 4/5; border-right: none; border-bottom: 1px solid var(--bone-mute-2); }
+    .col-card:last-child { border-bottom: none; }
+    .col-card-label .more { opacity: 1; transform: translateY(0); }
+
+    /* Studio mobile */
+    .act-studio { padding: 80px 20px; }
+    .studio-head { grid-template-columns: 1fr; gap: 28px; padding-bottom: 36px; }
+    .studio-head .studio-quote { font-size: clamp(26px, 7vw, 36px); max-width: none; }
+    .studio-stats-row { grid-template-columns: 1fr 1fr; gap: 24px 0; padding: 28px 0 48px; }
+    .studio-stat { border-right: none; padding-right: 0; }
+    .studio-stat:nth-child(odd) { border-right: 1px solid var(--mute-2); padding-right: 18px; }
+    .studio-stat .num { font-size: 48px; }
+    .studio-caps { grid-template-columns: 1fr; gap: 32px; padding-top: 48px; }
+    .studio-cap { border-right: none; padding-right: 0; padding-bottom: 28px; border-bottom: 1px solid var(--mute-2); }
+    .studio-cap:last-child { border-bottom: none; padding-bottom: 0; }
+
+    /* Lookbook mobile */
+    .act-lookbook { padding: 80px 20px; }
+    .look-head { grid-template-columns: 1fr; gap: 24px; }
+    .look-head .look-meta { text-align: left; max-width: none; }
+    .look-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 14px; }
+    .look { aspect-ratio: 4/5; grid-column: 1 !important; grid-row: auto !important; }
+    .look-label h3 { font-size: 22px; }
 
     .garment { grid-template-columns: 1fr; }
     .garment-img { height: 65svh; }
@@ -1110,9 +1423,10 @@
 <header class="nav" id="nav">
   <a href="#" class="nav-logo">Layo</a>
   <div class="nav-right">
-    <a class="nav-link" href="#act-2">Studio</a>
     <a class="nav-link" href="#act-3">World</a>
-    <a class="nav-link" href="#act-5">Garment</a>
+    <a class="nav-link" href="#act-collections">Collections</a>
+    <a class="nav-link" href="#act-studio">Studio</a>
+    <a class="nav-link" href="#act-lookbook">Lookbook</a>
     <a class="nav-link" href="#act-6">Begin</a>
     <button class="menu-burger" id="burger" aria-label="Menu"><span></span><span></span></button>
   </div>
@@ -1120,8 +1434,10 @@
 
 <div class="drawer" id="drawer">
   <ul>
-    <li><a href="#act-2">Studio</a></li>
     <li><a href="#act-3"><em>World</em></a></li>
+    <li><a href="#act-collections">Collections</a></li>
+    <li><a href="#act-studio">Studio</a></li>
+    <li><a href="#act-lookbook">Lookbook</a></li>
     <li><a href="#act-5">Garment</a></li>
     <li><a href="#act-6">Begin</a></li>
   </ul>
@@ -1225,31 +1541,173 @@
   </div>
 </section>
 
-<!-- =================== ACT IV — NUMBERS (3 single panels) =================== -->
-<section class="act-4" id="act-4">
-  <div class="panel">
-    <span class="panel-mark">Act IV — In Numbers</span>
-    <span class="panel-tag">No. 01 / Years</span>
-    <div class="panel-num">
-      <div class="n"><span data-n="30">0</span><em>Y</em></div>
-      <div class="lbl">Years of fabric. Three apparel generations,<br>one obsession with finish.</div>
+<!-- =================== ACT IV — COLLECTIONS =================== -->
+<section class="act-collections" id="act-collections">
+  <div class="col-head">
+    <span class="act-mark">Act IV — Collections</span>
+    <h2 class="fade">Three lines.<br><em>Built around</em><br>how people move.</h2>
+    <div class="col-meta fade">
+      Vol. 03 / SS 26
+      <strong>09 product lines</strong>
+      across 3 capsules
     </div>
   </div>
-  <div class="panel dark" data-dark="1">
-    <span class="panel-mark">No. 02 / Reach</span>
-    <span class="panel-tag">SS 2026 — Live</span>
-    <div class="panel-num">
-      <div class="n"><span data-n="80">0</span><em>+</em></div>
-      <div class="lbl">Countries shipped. From Milano boutiques<br>to Vancouver flagships.</div>
+  <div class="col-grid">
+    <a class="col-card" href="#act-6">
+      <div class="col-card-img">
+        <img alt="Fashion Active — studio · soft performance" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1400&q=82">
+      </div>
+      <div class="col-card-overlay"></div>
+      <div class="col-card-num">01 — Studio · Soft performance</div>
+      <div class="col-card-label">
+        <h3>Fashion <em>Active</em></h3>
+        <div class="tags">Yoga · Pilates · Studio · Athleisure</div>
+        <span class="more">Explore line <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+      </div>
+    </a>
+    <a class="col-card" href="#act-6">
+      <div class="col-card-img">
+        <img alt="Urban Outdoor — commuter · layering" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1400&q=82">
+      </div>
+      <div class="col-card-overlay"></div>
+      <div class="col-card-num">02 — Commuter · Light technical</div>
+      <div class="col-card-label">
+        <h3>Urban <em>Outdoor</em></h3>
+        <div class="tags">Running · Cycling · Outerwear · 4-Season layering</div>
+        <span class="more">Explore line <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+      </div>
+    </a>
+    <a class="col-card" href="#act-6">
+      <div class="col-card-img">
+        <img alt="Technical Lifestyle — concrete · movement" src="https://images.unsplash.com/photo-1485231183945-fffde7cc051e?auto=format&fit=crop&w=1400&q=82">
+      </div>
+      <div class="col-card-overlay"></div>
+      <div class="col-card-num">03 — Concrete · Movement</div>
+      <div class="col-card-label">
+        <h3>Technical <em>Lifestyle</em></h3>
+        <div class="tags">Athleisure · Seamless · Performance · Recycled</div>
+        <span class="more">Explore line <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- =================== ACT V — THE STUDIO (compact: stats + capabilities) =================== -->
+<section class="act-studio" id="act-studio">
+  <div class="studio-head">
+    <span class="act-mark">Act V — The Studio</span>
+    <h2 class="studio-quote fade"><em>Thirty</em> years of fabric, <em>eighty</em> countries served, one studio in Jiaxing.</h2>
+  </div>
+  <div class="studio-stats-row">
+    <div class="studio-stat fade">
+      <div class="num"><span data-n="30">0</span><em>Y</em></div>
+      <div class="lbl"><strong>Years of practice</strong>Founded 1996 · Family-led across three apparel generations</div>
+    </div>
+    <div class="studio-stat fade">
+      <div class="num">$<span data-n="300">0</span><em>M</em></div>
+      <div class="lbl"><strong>2025 production</strong>Across nine product lines &amp; eight floors</div>
+    </div>
+    <div class="studio-stat fade">
+      <div class="num"><span data-n="80">0</span><em>+</em></div>
+      <div class="lbl"><strong>Countries shipped</strong>From Milano to Vancouver — five weekly windows</div>
+    </div>
+    <div class="studio-stat fade">
+      <div class="num"><span data-n="120">0</span></div>
+      <div class="lbl"><strong>Brand partners</strong>Long OEM/ODM relationships, mostly unnamed</div>
     </div>
   </div>
-  <div class="panel">
-    <span class="panel-mark">No. 03 / Trust</span>
-    <span class="panel-tag">Studio — Active</span>
-    <div class="panel-num">
-      <div class="n"><span data-n="120">0</span></div>
-      <div class="lbl">Brand partners on the floor. <em>Quietly,</em><br>across two decades.</div>
+  <div class="studio-caps">
+    <div class="studio-cap fade">
+      <div class="cap-num">01 / Tempo</div>
+      <h3>Fast <em>Development</em></h3>
+      <p>Brief to first sample in 14 days. Tech-pack, pattern and sampling under one roof.</p>
     </div>
+    <div class="studio-cap fade">
+      <div class="cap-num">02 / Material</div>
+      <h3>Strong Material <em>Access</em></h3>
+      <p>6,000+ fabrics across Italian mills, Japanese seamless, recycled-yarn programs.</p>
+    </div>
+    <div class="studio-cap fade">
+      <div class="cap-num">03 / Flexibility</div>
+      <h3>Flexible <em>MOQ</em></h3>
+      <p>From 100-piece capsule drops to 100,000-piece bulk. We move the floor to fit the brief.</p>
+    </div>
+    <div class="studio-cap fade">
+      <div class="cap-num">04 / Trust</div>
+      <h3>Reliable <em>Execution</em></h3>
+      <p>BSCI · WRAP · OEKO-TEX · Sedex audited. 99.2% on-time across 24 months.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ACT VI — LOOKBOOK =================== -->
+<section class="act-lookbook" id="act-lookbook">
+  <div class="look-head">
+    <span class="act-mark">Act VI — Lookbook</span>
+    <h2 class="fade">From the floor.<br><em>SS</em> 26.</h2>
+    <p class="look-meta fade">
+      Sample stories shot in Jiaxing<br>
+      &amp; on location across Land · Air · Yonder · Ocean.
+      <strong>12 stories · 3 covers</strong>
+    </p>
+  </div>
+  <div class="look-grid">
+    <a class="look big" href="#">
+      <img alt="Above the Tree-line" src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1600&q=82">
+      <div class="look-label">
+        <span class="tag">Capsule · Outdoor</span>
+        <h3>Above the <em>Tree-line</em></h3>
+        <div class="meta">Four-season · Membrane · 05 looks</div>
+      </div>
+    </a>
+    <a class="look med" href="#">
+      <img alt="Mile Markers" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1100&q=82">
+      <div class="look-label">
+        <span class="tag">Editorial · Running</span>
+        <h3>Mile <em>Markers</em></h3>
+        <div class="meta">Performance · Recycled · 06 looks</div>
+      </div>
+    </a>
+    <a class="look sm" href="#">
+      <img alt="Indigo Studies" src="https://images.unsplash.com/photo-1604176354204-9268737828e4?auto=format&fit=crop&w=900&q=82">
+      <div class="look-label">
+        <span class="tag">Material · Notes</span>
+        <h3>Indigo <em>Studies</em></h3>
+        <div class="meta">10oz denim · Garment-dyed</div>
+      </div>
+    </a>
+    <a class="look sm" href="#">
+      <img alt="Club-house Tailoring" src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=82">
+      <div class="look-label">
+        <span class="tag">Capsule · Golf</span>
+        <h3>Club-house <em>Tailoring</em></h3>
+        <div class="meta">Stretch piqué · 04 looks</div>
+      </div>
+    </a>
+    <a class="look sm" href="#">
+      <img alt="Performance Sole" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=82">
+      <div class="look-label">
+        <span class="tag">Object · Footwear</span>
+        <h3>Performance <em>Sole</em></h3>
+        <div class="meta">Studio object · 03 looks</div>
+      </div>
+    </a>
+    <a class="look tall" href="#">
+      <img alt="The Rack Study" src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1100&q=82">
+      <div class="look-label">
+        <span class="tag">Editorial · Outerwear</span>
+        <h3>The <em>Rack</em> Study</h3>
+        <div class="meta">Four-season · 08 looks</div>
+      </div>
+    </a>
+    <a class="look wide2" href="#">
+      <img alt="Block-print Blocks" src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1600&q=82">
+      <div class="look-label">
+        <span class="tag">Editorial · Street</span>
+        <h3>Block-print <em>Blocks</em></h3>
+        <div class="meta">Heavy jersey · Garment-dye · 07 looks</div>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -1257,7 +1715,7 @@
 <section class="act-5" id="act-5" data-dark="1">
   <div class="garment">
     <div class="garment-text">
-      <span class="garment-mark">Act V — A Garment Study</span>
+      <span class="garment-mark">Act VII — A Garment Study</span>
       <h2 class="fade">A study in <em>weave</em><br>&amp; soft performance.</h2>
       <p class="caption fade">A single look from our Technical Lifestyle line — heavy-weight French terry at 380 gsm, brushed back, garment-dyed in small batches at our Jiaxing dye-house. The kind of piece that disappears into the wardrobe and outlasts the season.</p>
       <div class="garment-row fade">
@@ -1276,7 +1734,7 @@
 <!-- =================== ACT VI — BEGIN =================== -->
 <section class="act-6" id="act-6">
   <div class="act-6-top">
-    <span>Act VI — Begin</span>
+    <span>Act VIII — Begin</span>
     <span>A single conversation.</span>
   </div>
   <div class="act-6-mid">
