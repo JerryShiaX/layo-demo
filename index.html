@@ -588,6 +588,15 @@
     transform: scale(1.06);
     transition: transform 2.5s var(--ease-out);
   }
+  .world-vid {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease);
+    filter: brightness(.78);
+  }
+  .world.active .world-vid { opacity: 1; }
   .world.active .world-bg img { transform: scale(1); }
   .world::after {
     content: '';
@@ -1438,8 +1447,13 @@
   }
   .rise-words.in .w > i { transform: translateY(0); }
 
-  /* ============ Collections — video on hover ============ */
-  .col-card-img { position: absolute; inset: 0; }
+  /* ============ Collections — video / Ken Burns motion on hover ============ */
+  .col-card-img { position: absolute; inset: 0; overflow: hidden; }
+  .col-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 6s var(--ease-out), filter .8s var(--ease);
+  }
   .col-card-vid {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
@@ -1451,6 +1465,11 @@
   }
   .col-card:hover .col-card-vid { opacity: 1; }
   .col-card:hover .col-card-img img { filter: brightness(.55); transform: scale(1.02); }
+  /* CSS-only Ken Burns for non-video cards */
+  .col-card:hover .col-card-anim img {
+    transform: scale(1.15) translate(-3%, -2%);
+    filter: brightness(.85) saturate(1.15);
+  }
 
   /* ============ Lookbook isolate-on-hover ============ */
   .look-grid.has-hover .look { transition: opacity .55s var(--ease), filter .55s var(--ease); }
@@ -1823,7 +1842,7 @@
     <span class="act-3-lock"><em>Four environments. One studio.</em></span>
     <div class="act-3-track" id="worldTrack">
       <div class="world active">
-        <div class="world-bg"><img alt="Land" src="https://images.unsplash.com/photo-1547234935-80c7145ec969?auto=format&fit=crop&w=2200&q=82"></div>
+        <div class="world-bg"><img alt="Land — sand dunes" src="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=2200&q=82"></div>
         <div class="world-num">N° 01</div>
         <div class="world-letter">L</div>
         <div class="world-meta">
@@ -1850,7 +1869,10 @@
         </div>
       </div>
       <div class="world">
-        <div class="world-bg"><img alt="Ocean" src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=2200&q=82"></div>
+        <div class="world-bg">
+          <img alt="Ocean" src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=2200&q=82">
+          <video class="world-vid" muted loop playsinline autoplay preload="metadata" src="assets/video/ocean.mp4"></video>
+        </div>
         <div class="world-num">N° 04</div>
         <div class="world-letter">O</div>
         <div class="world-meta">
@@ -1877,7 +1899,7 @@
       <div class="col-card-img">
         <img alt="Fashion Active" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1400&q=82">
       </div>
-      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/walk.mp4"></video>
+      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/urban-active.mp4"></video>
       <div class="col-card-overlay"></div>
       <div class="col-card-num">01 / Studio</div>
       <div class="col-card-label">
@@ -1885,11 +1907,10 @@
         <div class="tags">Yoga · Pilates · Athleisure</div>
       </div>
     </a>
-    <a class="col-card video-card" href="#act-lines">
-      <div class="col-card-img">
+    <a class="col-card" href="#act-lines">
+      <div class="col-card-img col-card-anim">
         <img alt="Urban Outdoor" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1400&q=82">
       </div>
-      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/cycling.mp4"></video>
       <div class="col-card-overlay"></div>
       <div class="col-card-num">02 / Commuter</div>
       <div class="col-card-label">
@@ -1897,13 +1918,12 @@
         <div class="tags">Running · Cycling · Outerwear</div>
       </div>
     </a>
-    <a class="col-card video-card" href="#act-lines">
-      <div class="col-card-img">
-        <img alt="Technical Lifestyle" src="https://images.unsplash.com/photo-1485231183945-fffde7cc051e?auto=format&fit=crop&w=1400&q=82">
+    <a class="col-card" href="#act-lines">
+      <div class="col-card-img col-card-anim">
+        <img alt="Technical Lifestyle" src="assets/products/m-04-women-lace.jpg">
       </div>
-      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/model.mp4"></video>
       <div class="col-card-overlay"></div>
-      <div class="col-card-num">03 / Concrete</div>
+      <div class="col-card-num">03 / Editorial</div>
       <div class="col-card-label">
         <h3>Technical Lifestyle</h3>
         <div class="tags">Athleisure · Seamless · Recycled</div>
@@ -2055,7 +2075,7 @@
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
         <span class="line-card-num">03</span>
-        <img alt="Outdoor &amp; Outerwear" src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=80">
+        <img alt="Outdoor &amp; Outerwear" src="assets/products/m-05-men-knit.jpg">
       </div>
       <div class="line-card-body">
         <h3>Outdoor &amp; Outerwear</h3>
@@ -2091,7 +2111,7 @@
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
         <span class="line-card-num">06</span>
-        <img alt="Athleisure" src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=900&q=80">
+        <img alt="Athleisure" src="assets/products/m-06-men-hoodie.jpg">
       </div>
       <div class="line-card-body">
         <h3>Athleisure</h3>
@@ -2103,7 +2123,7 @@
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
         <span class="line-card-num">07</span>
-        <img alt="Fashion &amp; Street" src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=900&q=80">
+        <img alt="Fashion &amp; Street" src="assets/products/m-08-men-pink.jpg">
       </div>
       <div class="line-card-body">
         <h3>Fashion &amp; Street</h3>
