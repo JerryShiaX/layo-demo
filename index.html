@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400..500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F4EFE8'/%3E%3Ctext x='50' y='66' font-family='Cormorant Garamond' font-size='52' font-weight='400' letter-spacing='-2' text-anchor='middle' fill='%230A0908'%3EL%3C/text%3E%3C/svg%3E">
 
 <style>
@@ -27,7 +27,8 @@
     --bone-mute: rgba(244, 239, 232, 0.42);
     --bone-mute-2: rgba(244, 239, 232, 0.16);
 
-    --f-display: 'Newsreader', 'Cormorant Garamond', 'Times New Roman', serif;
+    --f-display: 'Inter', system-ui, sans-serif;
+    --f-serif: 'Newsreader', 'Cormorant Garamond', 'Times New Roman', serif;
     --f-sans: 'Inter', system-ui, sans-serif;
 
     --gutter: clamp(20px, 4vw, 56px);
@@ -41,15 +42,24 @@
   html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   body {
     font-family: var(--f-sans);
-    font-weight: 300;
+    font-weight: 400;
     background: var(--bone);
     color: var(--ink);
     line-height: 1.5;
     overflow-x: hidden;
     cursor: none;
     font-size: 14px;
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
   }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+  }
+  /* serif moments only where intentional */
+  .serif { font-family: var(--f-serif); font-weight: 400; letter-spacing: -0.005em; }
+  .serif em { font-style: italic; font-weight: 400; }
   img { display: block; max-width: 100%; height: auto; }
   a { color: inherit; text-decoration: none; }
   button { font: inherit; }
@@ -318,6 +328,38 @@
     transform: scale(1.04);
     animation: kenburns 18s ease-out infinite alternate;
   }
+  /* Spotlight reveal — hidden Layo building photo under cursor */
+  .hero-reveal {
+    position: absolute; inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .8s var(--ease);
+    --mx: 50%; --my: 50%;
+    -webkit-mask-image: radial-gradient(circle 260px at var(--mx) var(--my), rgba(0,0,0,1) 0%, rgba(0,0,0,.92) 35%, rgba(0,0,0,.4) 65%, transparent 80%);
+    mask-image: radial-gradient(circle 260px at var(--mx) var(--my), rgba(0,0,0,1) 0%, rgba(0,0,0,.92) 35%, rgba(0,0,0,.4) 65%, transparent 80%);
+  }
+  .hero-reveal img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: blur(6px) saturate(.85) contrast(1.05);
+    transform: scale(1.06);
+  }
+  .act-1.reveal-on .hero-reveal { opacity: .96; }
+  .reveal-hint {
+    position: absolute;
+    bottom: 16px; left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 5;
+    font-family: var(--f-sans);
+    font-size: 9px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    pointer-events: none;
+    transition: opacity .5s;
+  }
+  .act-1.reveal-on .reveal-hint { opacity: 0; }
   @keyframes kenburns {
     from { transform: scale(1.02) translateY(0); }
     to   { transform: scale(1.12) translateY(-1.5%); }
@@ -510,6 +552,7 @@
     transition: background .5s;
   }
   .act-2-progress span.on { background: var(--ink); }
+  .manifesto.serif { font-style: normal; }
 
   /* ============ ACT III — FOUR WORLDS (sticky horizontal) ============ */
   .act-3 {
@@ -983,81 +1026,134 @@
   .look.tall  { grid-column: span 5; grid-row: span 2; }
   .look.wide2 { grid-column: span 7; grid-row: span 2; }
 
-  /* ============ ACT V — GARMENT STUDY ============ */
+  /* ============ ACT VIII — PACE (process timeline, no image) ============ */
   .act-5 {
     background: var(--ink);
     color: var(--bone);
-    padding: 0;
-    position: relative;
-  }
-  .garment {
+    padding: var(--gutter);
+    padding-top: clamp(80px, 12vw, 180px);
+    padding-bottom: clamp(80px, 12vw, 180px);
     min-height: 100svh;
     display: grid;
-    grid-template-columns: 1fr 1fr;
     align-items: center;
+    position: relative;
+  }
+  .pace-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .pace-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 6vw;
+  }
+  .pace-top .pace-mark {
+    font-family: var(--f-sans);
+    font-size: 10px;
+    letter-spacing: var(--wide);
+    text-transform: uppercase;
+    color: var(--bone-mute);
+    margin-bottom: 28px;
+  }
+  .pace-top h2 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 80px);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    margin-bottom: 12px;
+  }
+  .pace-top .pace-sub {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(16px, 1.5vw, 22px);
+    color: var(--bone-mute);
+  }
+  .pace-num {
+    text-align: right;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+  .pace-num .big {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(120px, 18vw, 260px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .pace-num .unit {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(20px, 2vw, 30px);
+    color: var(--bone-mute);
+  }
+  .pace-line {
+    position: relative;
+    border-top: 1px solid var(--bone-mute-2);
+    padding-top: 36px;
+  }
+  .pace-bar {
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 1px;
+    background: var(--bone);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 2.5s var(--ease-out);
+  }
+  .pace-line.in .pace-bar { transform: scaleX(1); }
+  .pace-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 0;
   }
-  .garment-img {
-    position: relative;
-    height: 100svh;
-    overflow: hidden;
+  .pace-step {
+    padding: 0 20px;
+    border-right: 1px solid var(--bone-mute-2);
+    display: grid; gap: 12px;
   }
-  .garment-img img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 1.2s var(--ease-out);
-  }
-  .garment-text {
-    padding: var(--gutter);
-    display: grid; gap: 36px;
-    align-content: center;
-  }
-  .garment-text h2 {
+  .pace-step:first-child { padding-left: 0; }
+  .pace-step:last-child { border-right: none; padding-right: 0; }
+  .pace-step .d {
     font-family: var(--f-display);
-    font-weight: 300;
-    font-size: clamp(40px, 5.5vw, 84px);
-    line-height: 1.04;
-    letter-spacing: -0.022em;
-    max-width: 15ch;
+    font-weight: 500;
+    font-size: clamp(28px, 3vw, 44px);
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
-  .garment-text h2 em { font-style: italic; }
-  .garment-text .caption {
-    font-family: var(--f-display);
+  .pace-step .d sup {
+    font-family: var(--f-serif);
     font-style: italic;
-    font-weight: 300;
-    font-size: clamp(15px, 1.4vw, 18px);
+    font-weight: 400;
+    font-size: 0.45em;
     color: var(--bone-mute);
-    max-width: 38ch;
-    line-height: 1.55;
+    margin-left: 4px;
+    vertical-align: super;
   }
-  .garment-mark {
+  .pace-step .nm {
     font-family: var(--f-sans);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: var(--wide);
     text-transform: uppercase;
-    color: var(--bone-mute);
-  }
-  .garment-row {
-    display: flex; justify-content: space-between;
-    font-family: var(--f-sans);
-    font-size: 10px;
-    letter-spacing: var(--wide);
-    text-transform: uppercase;
-    color: var(--bone-mute);
-    border-top: 1px solid var(--bone-mute-2);
-    padding-top: 18px;
-  }
-  .garment-row span {
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .garment-row strong {
-    font-family: var(--f-display);
-    font-style: italic;
-    font-weight: 300;
-    font-size: 16px;
     color: var(--bone);
-    letter-spacing: 0;
-    text-transform: none;
+  }
+  .pace-step .desc {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--bone-mute);
+    line-height: 1.5;
+    margin-top: 4px;
   }
 
   /* ============ ACT VI — BEGIN A BRIEF ============ */
@@ -1342,26 +1438,19 @@
   }
   .rise-words.in .w > i { transform: translateY(0); }
 
-  /* ============ Collections — image swap on hover ============ */
-  .col-card-img {
+  /* ============ Collections — video on hover ============ */
+  .col-card-img { position: absolute; inset: 0; }
+  .col-card-vid {
     position: absolute; inset: 0;
-  }
-  .col-card-img-2 {
-    position: absolute; inset: 0;
-    opacity: 0;
-    transition: opacity 1s var(--ease);
-    z-index: 1;
-  }
-  .col-card-img-2 img {
     width: 100%; height: 100%;
     object-fit: cover;
-    filter: brightness(.9) grayscale(0%);
-    transform: scale(1.04);
-    transition: transform 1.8s var(--ease-out);
+    opacity: 0;
+    transition: opacity .8s var(--ease);
+    z-index: 1;
+    pointer-events: none;
   }
-  .col-card:hover .col-card-img-2 { opacity: 1; }
-  .col-card:hover .col-card-img-2 img { transform: scale(1.08); }
-  .col-card:hover .col-card-img img { filter: brightness(.55) grayscale(15%); }
+  .col-card:hover .col-card-vid { opacity: 1; }
+  .col-card:hover .col-card-img img { filter: brightness(.55); transform: scale(1.02); }
 
   /* ============ Lookbook isolate-on-hover ============ */
   .look-grid.has-hover .look { transition: opacity .55s var(--ease), filter .55s var(--ease); }
@@ -1609,9 +1698,16 @@
     /* Disable tilt on mobile */
     .col-card, .line-card { transform: none !important; }
 
-    .garment { grid-template-columns: 1fr; }
-    .garment-img { height: 65svh; }
-    .garment-text { padding: 56px 20px; }
+    /* Pace mobile */
+    .act-5 { padding: 80px 20px; }
+    .pace-top { grid-template-columns: 1fr; gap: 28px; }
+    .pace-num { justify-content: flex-start; }
+    .pace-num .big { font-size: 120px; }
+    .pace-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .pace-step { padding: 0 14px 20px 0; border-right: none; border-bottom: 1px solid var(--bone-mute-2); }
+    .pace-step:nth-child(odd) { border-right: 1px solid var(--bone-mute-2); padding-right: 14px; }
+    .pace-step:last-child { border-bottom: none; }
+    .pace-step:nth-last-child(2) { border-bottom: none; }
 
     .act-6-mid { grid-template-columns: 1fr; gap: 36px; padding: 8vh 0; }
     .act-6-foot { grid-template-columns: 1fr; gap: 20px; }
@@ -1677,26 +1773,29 @@
   <div class="bg">
     <img alt="" src="https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&w=2400&q=82">
   </div>
+  <div class="hero-reveal" id="heroReveal">
+    <img alt="Layo Building · Jiaxing" src="assets/layo-building.jpg">
+  </div>
   <div class="act-1-inner">
     <div class="act-1-top">
-      <span class="live">LIVE FROM THE STUDIO — JIAXING</span>
-      <span>Act I — Horizon</span>
+      <span class="live">LAYO STUDIO — JIAXING</span>
+      <span>Act I</span>
     </div>
     <div class="act-1-kw">
-      <div class="word">Agility<span class="sep">/</span>Speed<span class="sep">/</span>Materiality</div>
-      <div class="sub">Engineered for modern apparel development.</div>
+      <div class="word">Agility<span class="sep">·</span>Speed<span class="sep">·</span>Materiality</div>
     </div>
     <div class="act-1-bottom">
       <h1 class="act-1-headline">
-        <span class="l"><span>Engineered Garments,</span></span>
-        <span class="l"><span><em>Beyond Boundaries.</em></span></span>
+        <span class="l"><span>Engineered Garments.</span></span>
+        <span class="l"><span>Beyond Boundaries.</span></span>
       </h1>
       <div class="act-1-meta">
-        Vol. 03 · SS 26
-        <strong>Since nineteen ninety-six.</strong>
+        SS 26
+        <strong>Since 1996</strong>
       </div>
     </div>
   </div>
+  <div class="reveal-hint">↳ MOVE MOUSE TO REVEAL</div>
   <div class="scroll-cue">
     Scroll<div class="ln"></div>
   </div>
@@ -1707,11 +1806,11 @@
   <div class="act-2-track" id="manifesto-track" style="height: 500svh;">
     <div class="act-2-stage">
       <span class="act-2-chapter">Act II — Manifesto</span>
-      <p class="manifesto">
-        <span class="phrase">We are an apparel studio</span><span class="phrase"> in <em>Jiaxing</em></span><span class="phrase">, working in fabric</span><span class="phrase"> — not floor space</span><span class="phrase"> — for the brands</span><span class="phrase"> you already <em>wear</em>.</span>
+      <p class="manifesto serif">
+        <span class="phrase">An apparel studio</span><span class="phrase"> in Jiaxing.</span><span class="phrase"> We work in fabric,</span><span class="phrase"> for the brands</span><span class="phrase"> you already wear.</span>
       </p>
       <div class="act-2-progress">
-        <span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
       </div>
     </div>
   </div>
@@ -1729,7 +1828,7 @@
         <div class="world-letter">L</div>
         <div class="world-meta">
           <div class="nm">LAND</div>
-          <div class="ds">Desert trails, studio floors, the dust on a sample's hem.</div>
+          <div class="ds">Desert &amp; trail.</div>
         </div>
       </div>
       <div class="world">
@@ -1738,7 +1837,7 @@
         <div class="world-letter">A</div>
         <div class="world-meta">
           <div class="nm">AIR</div>
-          <div class="ds">Altitude, the breath between layers, weight measured in grams.</div>
+          <div class="ds">Altitude &amp; breath.</div>
         </div>
       </div>
       <div class="world">
@@ -1747,7 +1846,7 @@
         <div class="world-letter">Y</div>
         <div class="world-meta">
           <div class="nm">YONDER</div>
-          <div class="ds">The horizon behind the next collection. Outposts. Range.</div>
+          <div class="ds">Range &amp; outpost.</div>
         </div>
       </div>
       <div class="world">
@@ -1756,7 +1855,7 @@
         <div class="world-letter">O</div>
         <div class="world-meta">
           <div class="nm">OCEAN</div>
-          <div class="ds">Recycled yarn, salt-cured fit, the slow drift of a swim line.</div>
+          <div class="ds">Swim &amp; drift.</div>
         </div>
       </div>
     </div>
@@ -1770,57 +1869,44 @@
 <section class="act-collections" id="act-collections">
   <div class="col-head">
     <span class="act-mark">Act IV — Collections</span>
-    <h2 class="fade">Three lines.<br><em>Built around</em><br>how people move.</h2>
-    <div class="col-meta fade">
-      Vol. 03 / SS 26
-      <strong>09 product lines</strong>
-      across 3 capsules
-    </div>
+    <h2 class="fade serif">Three lines. <em>Built around how people move.</em></h2>
+    <div class="col-meta fade">SS 26 · <strong>09 product lines</strong></div>
   </div>
   <div class="col-grid">
-    <a class="col-card tilt-card" href="#act-lines">
+    <a class="col-card video-card" href="#act-lines">
       <div class="col-card-img">
-        <img alt="Fashion Active — studio · soft performance" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1400&q=82">
+        <img alt="Fashion Active" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1400&q=82">
       </div>
-      <div class="col-card-img-2">
-        <img alt="Fashion Active — alternate view" src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1400&q=82">
-      </div>
+      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/walk.mp4"></video>
       <div class="col-card-overlay"></div>
-      <div class="col-card-num">01 — Studio · Soft performance</div>
+      <div class="col-card-num">01 / Studio</div>
       <div class="col-card-label">
-        <h3>Fashion <em>Active</em></h3>
-        <div class="tags">Yoga · Pilates · Studio · Athleisure</div>
-        <span class="more">Explore line <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+        <h3>Fashion Active</h3>
+        <div class="tags">Yoga · Pilates · Athleisure</div>
       </div>
     </a>
-    <a class="col-card tilt-card" href="#act-lines">
+    <a class="col-card video-card" href="#act-lines">
       <div class="col-card-img">
-        <img alt="Urban Outdoor — commuter · layering" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1400&q=82">
+        <img alt="Urban Outdoor" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1400&q=82">
       </div>
-      <div class="col-card-img-2">
-        <img alt="Urban Outdoor — alternate view" src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1400&q=82">
-      </div>
+      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/cycling.mp4"></video>
       <div class="col-card-overlay"></div>
-      <div class="col-card-num">02 — Commuter · Light technical</div>
+      <div class="col-card-num">02 / Commuter</div>
       <div class="col-card-label">
-        <h3>Urban <em>Outdoor</em></h3>
-        <div class="tags">Running · Cycling · Outerwear · 4-Season layering</div>
-        <span class="more">Explore line <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+        <h3>Urban Outdoor</h3>
+        <div class="tags">Running · Cycling · Outerwear</div>
       </div>
     </a>
-    <a class="col-card tilt-card" href="#act-lines">
+    <a class="col-card video-card" href="#act-lines">
       <div class="col-card-img">
-        <img alt="Technical Lifestyle — concrete · movement" src="https://images.unsplash.com/photo-1485231183945-fffde7cc051e?auto=format&fit=crop&w=1400&q=82">
+        <img alt="Technical Lifestyle" src="https://images.unsplash.com/photo-1485231183945-fffde7cc051e?auto=format&fit=crop&w=1400&q=82">
       </div>
-      <div class="col-card-img-2">
-        <img alt="Technical Lifestyle — alternate view" src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1400&q=82">
-      </div>
+      <video class="col-card-vid" muted loop playsinline preload="none" data-src="assets/video/model.mp4"></video>
       <div class="col-card-overlay"></div>
-      <div class="col-card-num">03 — Concrete · Movement</div>
+      <div class="col-card-num">03 / Concrete</div>
       <div class="col-card-label">
-        <h3>Technical <em>Lifestyle</em></h3>
-        <div class="tags">Athleisure · Seamless · Performance · Recycled</div>
-        <span class="more">Explore line <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+        <h3>Technical Lifestyle</h3>
+        <div class="tags">Athleisure · Seamless · Recycled</div>
       </div>
     </a>
   </div>
@@ -1830,46 +1916,46 @@
 <section class="act-studio" id="act-studio">
   <div class="studio-head">
     <span class="act-mark">Act V — The Studio</span>
-    <h2 class="studio-quote fade"><em>Thirty</em> years of fabric, <em>eighty</em> countries served, one studio in Jiaxing.</h2>
+    <h2 class="studio-quote fade serif"><em>Thirty</em> years of fabric. One studio in Jiaxing.</h2>
   </div>
   <div class="studio-stats-row">
     <div class="studio-stat fade">
       <div class="num"><span data-n="30">0</span><em>Y</em></div>
-      <div class="lbl"><strong>Years of practice</strong>Founded 1996 · Family-led across three apparel generations</div>
+      <div class="lbl"><strong>Years</strong>Since 1996</div>
     </div>
     <div class="studio-stat fade">
       <div class="num">$<span data-n="300">0</span><em>M</em></div>
-      <div class="lbl"><strong>2025 production</strong>Across nine product lines &amp; eight floors</div>
+      <div class="lbl"><strong>2025 production</strong></div>
     </div>
     <div class="studio-stat fade">
       <div class="num"><span data-n="80">0</span><em>+</em></div>
-      <div class="lbl"><strong>Countries shipped</strong>From Milano to Vancouver — five weekly windows</div>
+      <div class="lbl"><strong>Countries</strong>Milano → Vancouver</div>
     </div>
     <div class="studio-stat fade">
       <div class="num"><span data-n="120">0</span></div>
-      <div class="lbl"><strong>Brand partners</strong>Long OEM/ODM relationships, mostly unnamed</div>
+      <div class="lbl"><strong>Brand partners</strong>OEM / ODM</div>
     </div>
   </div>
   <div class="studio-caps">
     <div class="studio-cap fade">
       <div class="cap-num">01 / Tempo</div>
-      <h3>Fast <em>Development</em></h3>
-      <p>Brief to first sample in 14 days. Tech-pack, pattern and sampling under one roof.</p>
+      <h3>Fast Development</h3>
+      <p>Brief to first sample in 14 days.</p>
     </div>
     <div class="studio-cap fade">
       <div class="cap-num">02 / Material</div>
-      <h3>Strong Material <em>Access</em></h3>
-      <p>6,000+ fabrics across Italian mills, Japanese seamless, recycled-yarn programs.</p>
+      <h3>Material Access</h3>
+      <p>6,000+ fabrics. Italian mills, Japanese seamless.</p>
     </div>
     <div class="studio-cap fade">
-      <div class="cap-num">03 / Flexibility</div>
-      <h3>Flexible <em>MOQ</em></h3>
-      <p>From 100-piece capsule drops to 100,000-piece bulk. We move the floor to fit the brief.</p>
+      <div class="cap-num">03 / Flex</div>
+      <h3>Flexible MOQ</h3>
+      <p>100-piece capsules to 100,000-piece bulk.</p>
     </div>
     <div class="studio-cap fade">
       <div class="cap-num">04 / Trust</div>
-      <h3>Reliable <em>Execution</em></h3>
-      <p>BSCI · WRAP · OEKO-TEX · Sedex audited. 99.2% on-time across 24 months.</p>
+      <h3>Reliable</h3>
+      <p>BSCI · WRAP · OEKO-TEX · Sedex. 99.2% on-time.</p>
     </div>
   </div>
 </section>
@@ -1878,68 +1964,57 @@
 <section class="act-lookbook" id="act-lookbook">
   <div class="look-head">
     <span class="act-mark">Act VI — Lookbook</span>
-    <h2 class="fade">From the floor.<br><em>SS</em> 26.</h2>
-    <p class="look-meta fade">
-      Sample stories shot in Jiaxing<br>
-      &amp; on location across Land · Air · Yonder · Ocean.
-      <strong>12 stories · 3 covers</strong>
-    </p>
+    <h2 class="fade serif">From the floor. <em>SS 26.</em></h2>
+    <p class="look-meta fade"><strong>12 stories · 3 covers</strong></p>
   </div>
   <div class="look-grid">
     <a class="look big" href="#">
       <img alt="Above the Tree-line" src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1600&q=82">
       <div class="look-label">
-        <span class="tag">Capsule · Outdoor</span>
-        <h3>Above the <em>Tree-line</em></h3>
-        <div class="meta">Four-season · Membrane · 05 looks</div>
+        <span class="tag">Outdoor</span>
+        <h3>Above the Tree-line</h3>
       </div>
     </a>
     <a class="look med" href="#">
       <img alt="Mile Markers" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1100&q=82">
       <div class="look-label">
-        <span class="tag">Editorial · Running</span>
-        <h3>Mile <em>Markers</em></h3>
-        <div class="meta">Performance · Recycled · 06 looks</div>
+        <span class="tag">Running</span>
+        <h3>Mile Markers</h3>
       </div>
     </a>
     <a class="look sm" href="#">
       <img alt="Indigo Studies" src="https://images.unsplash.com/photo-1604176354204-9268737828e4?auto=format&fit=crop&w=900&q=82">
       <div class="look-label">
-        <span class="tag">Material · Notes</span>
-        <h3>Indigo <em>Studies</em></h3>
-        <div class="meta">10oz denim · Garment-dyed</div>
+        <span class="tag">Material</span>
+        <h3>Indigo Studies</h3>
       </div>
     </a>
     <a class="look sm" href="#">
       <img alt="Club-house Tailoring" src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=82">
       <div class="look-label">
-        <span class="tag">Capsule · Golf</span>
-        <h3>Club-house <em>Tailoring</em></h3>
-        <div class="meta">Stretch piqué · 04 looks</div>
+        <span class="tag">Golf</span>
+        <h3>Club-house Tailoring</h3>
       </div>
     </a>
     <a class="look sm" href="#">
       <img alt="Performance Sole" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=82">
       <div class="look-label">
-        <span class="tag">Object · Footwear</span>
-        <h3>Performance <em>Sole</em></h3>
-        <div class="meta">Studio object · 03 looks</div>
+        <span class="tag">Footwear</span>
+        <h3>Performance Sole</h3>
       </div>
     </a>
     <a class="look tall" href="#">
       <img alt="The Rack Study" src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1100&q=82">
       <div class="look-label">
-        <span class="tag">Editorial · Outerwear</span>
-        <h3>The <em>Rack</em> Study</h3>
-        <div class="meta">Four-season · 08 looks</div>
+        <span class="tag">Outerwear</span>
+        <h3>The Rack Study</h3>
       </div>
     </a>
     <a class="look wide2" href="#">
       <img alt="Block-print Blocks" src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1600&q=82">
       <div class="look-label">
-        <span class="tag">Editorial · Street</span>
-        <h3>Block-print <em>Blocks</em></h3>
-        <div class="meta">Heavy jersey · Garment-dye · 07 looks</div>
+        <span class="tag">Street</span>
+        <h3>Block-print Blocks</h3>
       </div>
     </a>
   </div>
@@ -1949,168 +2024,164 @@
 <section class="act-lines" id="act-lines">
   <div class="lines-head">
     <span class="act-mark">Act VII — Nine Lines</span>
-    <h2 class="fade">Nine <em>lines.</em><br>One studio.</h2>
-    <div class="meta fade">
-      Categorised by motion
-      <strong>09 product lines</strong>
-      MOQ 100–500 pcs
-    </div>
+    <h2 class="fade serif">Nine lines. <em>One studio.</em></h2>
+    <div class="meta fade">MOQ <strong>100–500 pcs</strong></div>
   </div>
   <div class="lines-grid">
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 01</span>
-        <span class="line-card-tag">Soft performance</span>
+        <span class="line-card-num">01</span>
         <img alt="Active &amp; Yoga" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3>Active &amp; <em>Yoga</em></h3>
-        <p>Seamless studio sets — sports bras, leggings, second-skin tanks. The line our buyers re-order seasonally.</p>
+        <h3>Active &amp; Yoga</h3>
         <div class="line-card-attrs">
-          <span><strong>Seamless</strong>Construction</span>
-          <span><strong>MOQ 200</strong>Sample-to-bulk</span>
+          <span>Seamless</span><span>MOQ 200</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 02</span>
-        <span class="line-card-tag">Mileage-grade</span>
+        <span class="line-card-num">02</span>
         <img alt="Running &amp; Cycling" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3>Running &amp; <em>Cycling</em></h3>
-        <p>Lightweight wovens, mileage-grade compression, reflective trims. Built for distance and weather.</p>
+        <h3>Running &amp; Cycling</h3>
         <div class="line-card-attrs">
-          <span><strong>4-Way Stretch</strong>120 gsm</span>
-          <span><strong>MOQ 300</strong>35-day lead</span>
+          <span>120 gsm</span><span>MOQ 300</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 03</span>
-        <span class="line-card-tag">Four-season</span>
+        <span class="line-card-num">03</span>
         <img alt="Outdoor &amp; Outerwear" src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3>Outdoor &amp; <em>Outerwear</em></h3>
-        <p>Membrane shells, insulation lofts, sealed seams. We carry stock for parka winters and trail springs.</p>
+        <h3>Outdoor &amp; Outerwear</h3>
         <div class="line-card-attrs">
-          <span><strong>15K Membrane</strong>Down 700FP</span>
-          <span><strong>MOQ 200</strong>42-day lead</span>
+          <span>15K Membrane</span><span>MOQ 200</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 04</span>
-        <span class="line-card-tag">Club-house</span>
+        <span class="line-card-num">04</span>
         <img alt="Golf &amp; Tennis" src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3>Golf &amp; <em>Tennis</em></h3>
-        <p>Stretch piqué polos, technical shorts, UPF skirts. Tailored cuts that still pass a six-hour round.</p>
+        <h3>Golf &amp; Tennis</h3>
         <div class="line-card-attrs">
-          <span><strong>UPF 50+</strong>Piqué knit</span>
-          <span><strong>MOQ 250</strong>30-day lead</span>
+          <span>UPF 50+</span><span>MOQ 250</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 05</span>
-        <span class="line-card-tag">Resort &amp; pool</span>
+        <span class="line-card-num">05</span>
         <img alt="Swimwear" src="https://images.unsplash.com/photo-1568252542512-9fe8fe9c87bb?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3><em>Swim</em>wear</h3>
-        <p>Recycled-yarn programs, chlorine-resistant, sun-protective. Cuts from minimalist one-pieces to resort shirts.</p>
+        <h3>Swimwear</h3>
         <div class="line-card-attrs">
-          <span><strong>ECONYL®</strong>Recycled</span>
-          <span><strong>MOQ 300</strong>40-day lead</span>
+          <span>ECONYL®</span><span>MOQ 300</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 06</span>
-        <span class="line-card-tag">Wardrobe</span>
+        <span class="line-card-num">06</span>
         <img alt="Athleisure" src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3><em>Athleisure</em></h3>
-        <p>Soft jersey foundations, French terry, brushed back. Wardrobe builders worn from studio to street.</p>
+        <h3>Athleisure</h3>
         <div class="line-card-attrs">
-          <span><strong>French Terry</strong>380 gsm</span>
-          <span><strong>MOQ 200</strong>35-day lead</span>
+          <span>380 gsm</span><span>MOQ 200</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 07</span>
-        <span class="line-card-tag">Editorial</span>
+        <span class="line-card-num">07</span>
         <img alt="Fashion &amp; Street" src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3>Fashion &amp; <em>Street</em></h3>
-        <p>Heavy jersey blocks, garment-dyed colour, sculpted silhouettes. Where our sport DNA meets the editorial calendar.</p>
+        <h3>Fashion &amp; Street</h3>
         <div class="line-card-attrs">
-          <span><strong>Heavy Jersey</strong>Garment-dyed</span>
-          <span><strong>MOQ 150</strong>40-day lead</span>
+          <span>Garment-dyed</span><span>MOQ 150</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 08</span>
-        <span class="line-card-tag">Body-mapped</span>
+        <span class="line-card-num">08</span>
         <img alt="Seamless" src="https://images.unsplash.com/photo-1593810451137-5dc55105dace?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3><em>Seamless</em></h3>
-        <p>Italian-machine knit. Compression zones engineered by muscle group — the kind of bra you forget you're wearing.</p>
+        <h3>Seamless</h3>
         <div class="line-card-attrs">
-          <span><strong>Italian Machines</strong>4-needle</span>
-          <span><strong>MOQ 500</strong>45-day lead</span>
+          <span>4-needle</span><span>MOQ 500</span>
         </div>
       </div>
     </a>
     <a class="line-card tilt-card" href="#act-6">
       <div class="line-card-img">
-        <span class="line-card-num">N° 09</span>
-        <span class="line-card-tag">Object studio</span>
+        <span class="line-card-num">09</span>
         <img alt="Accessories" src="https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=900&q=80">
       </div>
       <div class="line-card-body">
-        <h3><em>Accessories</em></h3>
-        <p>Caps, socks, technical bags, headbands. Small objects that finish the rotation.</p>
+        <h3>Accessories</h3>
         <div class="line-card-attrs">
-          <span><strong>Mixed Build</strong>Knit / woven</span>
-          <span><strong>MOQ 500</strong>30-day lead</span>
+          <span>Knit / woven</span><span>MOQ 500</span>
         </div>
       </div>
     </a>
   </div>
 </section>
 
-<!-- =================== ACT VIII — GARMENT STUDY =================== -->
+<!-- =================== ACT VIII — PACE (process timeline) =================== -->
 <section class="act-5" id="act-5" data-dark="1">
-  <div class="garment">
-    <div class="garment-text">
-      <span class="garment-mark">Act VIII — A Garment Study</span>
-      <h2 class="fade">A study in <em>weave</em><br>&amp; soft performance.</h2>
-      <p class="caption fade">A single look from our Technical Lifestyle line — heavy-weight French terry at 380 gsm, brushed back, garment-dyed in small batches at our Jiaxing dye-house. The kind of piece that disappears into the wardrobe and outlasts the season.</p>
-      <div class="garment-row fade">
-        <span><strong>French Terry</strong>Brushed-back</span>
-        <span><strong>100% Cotton</strong>Long-staple</span>
-        <span><strong>380</strong>Grams per square metre</span>
-        <span><strong>35 days</strong>Sample to bulk</span>
+  <div class="pace-inner">
+    <div class="pace-top">
+      <div>
+        <span class="pace-mark">Act VIII — Pace</span>
+        <h2>Brief to bulk.<br>Every programme.</h2>
+        <div class="pace-sub serif">No template. No surprises.</div>
+      </div>
+      <div class="pace-num">
+        <span class="big">45</span>
+        <span class="unit">days, average</span>
       </div>
     </div>
-    <div class="garment-img">
-      <img alt="Hooded sweatshirt · Layo Technical Lifestyle archive" src="https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&w=1600&q=82">
+    <div class="pace-line fade">
+      <span class="pace-bar"></span>
+      <div class="pace-steps">
+        <div class="pace-step">
+          <div class="d">00<sup>d</sup></div>
+          <div class="nm">Brief</div>
+          <div class="desc">Tech-pack &amp; concept.</div>
+        </div>
+        <div class="pace-step">
+          <div class="d">03<sup>d</sup></div>
+          <div class="nm">Pattern</div>
+          <div class="desc">Block, grade, fit.</div>
+        </div>
+        <div class="pace-step">
+          <div class="d">14<sup>d</sup></div>
+          <div class="nm">Sample</div>
+          <div class="desc">Fabric &amp; trims sealed.</div>
+        </div>
+        <div class="pace-step">
+          <div class="d">35<sup>d</sup></div>
+          <div class="nm">Bulk</div>
+          <div class="desc">Cut, sew, finish.</div>
+        </div>
+        <div class="pace-step">
+          <div class="d">45<sup>d</sup></div>
+          <div class="nm">Ship</div>
+          <div class="desc">QC, pack, dispatch.</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2122,12 +2193,12 @@
     <span>A single conversation.</span>
   </div>
   <div class="act-6-mid">
-    <h2 class="begin">
+    <h2 class="begin serif">
       <span class="l rise"><span>Begin a</span></span>
       <span class="l rise"><span><em>brief.</em></span></span>
     </h2>
     <div class="begin-side">
-      <p class="fade">Tell us about the line you are building. We reply within one business day — in English, Mandarin, Italian or German. Discretion is part of the service.</p>
+      <p class="fade">Reply within one business day. EN · 中文 · IT · DE.</p>
       <button class="begin-cta" id="openOvr" data-cursor="open">
         Open the form
         <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 6h10M7 2l4 4-4 4"/></svg>
@@ -2395,6 +2466,46 @@
     }, 800);
   }
   window.handleSubmit = handleSubmit;
+
+  // ============ HERO SPOTLIGHT REVEAL ============
+  const hero = document.getElementById('act-1');
+  const heroReveal = document.getElementById('heroReveal');
+  if (hero && heroReveal) {
+    let lastX = 50, lastY = 50, curX = 50, curY = 50, animating = false;
+    function rafSpotlight() {
+      curX += (lastX - curX) * 0.18;
+      curY += (lastY - curY) * 0.18;
+      heroReveal.style.setProperty('--mx', curX + '%');
+      heroReveal.style.setProperty('--my', curY + '%');
+      if (Math.abs(lastX - curX) > 0.1 || Math.abs(lastY - curY) > 0.1) {
+        requestAnimationFrame(rafSpotlight);
+      } else {
+        animating = false;
+      }
+    }
+    hero.addEventListener('mousemove', e => {
+      const r = hero.getBoundingClientRect();
+      lastX = ((e.clientX - r.left) / r.width) * 100;
+      lastY = ((e.clientY - r.top) / r.height) * 100;
+      if (!animating) { animating = true; requestAnimationFrame(rafSpotlight); }
+    });
+    hero.addEventListener('mouseenter', () => hero.classList.add('reveal-on'));
+    hero.addEventListener('mouseleave', () => hero.classList.remove('reveal-on'));
+  }
+
+  // ============ VIDEO ON HOVER (Collections) ============
+  document.querySelectorAll('.video-card').forEach(card => {
+    const vid = card.querySelector('.col-card-vid');
+    if (!vid || !vid.dataset.src) return;
+    let loaded = false;
+    card.addEventListener('mouseenter', () => {
+      if (!loaded) { vid.src = vid.dataset.src; loaded = true; }
+      vid.play().catch(() => {});
+    });
+    card.addEventListener('mouseleave', () => {
+      vid.pause();
+    });
+  });
 
   // ============ WORD-BY-WORD HEADLINE REVEAL ============
   function splitWords(el) {
